@@ -53,7 +53,7 @@ ResumeIQ-AI helps candidates understand how their resume performs against common
    ```
 5. Run the backend API server:
    ```bash
-   python manage.py runserver 8000
+   python manage.py runserver 
    ```
 
 Backend API base URL: `http://localhost:8000/api/`
