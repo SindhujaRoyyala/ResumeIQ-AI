@@ -1,16 +1,46 @@
-# React + Vite
+# ResumeIQ-AI Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is a React application built with Create React App. It provides authentication pages and a dashboard for uploading resumes, receiving ATS scores, and displaying AI-generated suggestions.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Install dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm start
+   ```
+3. Build for production:
+   ```bash
+   npm run build
+   ```
 
-## React Compiler
+## Configuration
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The frontend proxies API requests to the backend using the `proxy` field in `frontend/package.json`.
 
-## Expanding the ESLint configuration
+The app uses these main routes:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `/login` — login page
+- `/signup` — registration page
+- `/dashboard` — user dashboard for uploading resumes
+
+## API details
+
+The frontend expects the backend API base path to be `http://localhost:8000/api` and uses the following endpoints:
+
+- `POST /api/register/`
+- `POST /api/login/`
+- `POST /api/logout/`
+- `POST /api/upload/`
+- `GET /api/analyses/`
+- `GET /api/analyses/<id>/`
+
+## Notes
+
+- The dashboard uploads resume files as `file` in `FormData`.
+- The backend returns `ats_score`, `matched_kw`, `missing_kw`, and `ai_suggestions`.
+- The frontend stores authentication tokens in `localStorage`.

@@ -5,13 +5,38 @@ from rest_framework import status
 from django.core.files.storage import default_storage
  
 from .models import ResumeAnalysis
-from .serializers import ResumeUploadSerializer, ResumeAnalysisSerializer
+from .serializers import ResumeUploadSerializer, ResumeAnalysisSerializer, UserRegisterSerializer, UserSerializer
 from .ai_service import extract_text_from_file, compute_ats_score, get_ai_suggestions
- 
- 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+
+
+class RegisterView(APIView):
+    """POST /api/register/ - Register a new user."""
+    def post(self, request):
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({
+                'user': UserSerializer(user).data,
+                'token': token.key
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LogoutView(APIView):
+    """POST /api/logout/ - Logout user by deleting their token."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response({'success': 'Logged out successfully.'}, status=status.HTTP_200_OK)
+
+
 class UploadResumeView(APIView):
     """POST /api/upload/ – upload a resume and receive analysis."""
- 
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = ResumeUploadSerializer(data=request.data)
         if not serializer.is_valid():
@@ -68,18 +93,20 @@ class UploadResumeView(APIView):
  
 class AnalysisListView(APIView):
     """GET /api/analyses/ – list past analyses."""
- 
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        qs = ResumeAnalysis.objects.filter(status='done').order_by('-created_at')[:20]
+        qs = ResumeAnalysis.objects.filter(status='done', user=request.user).order_by('-created_at')[:20]
         return Response(ResumeAnalysisSerializer(qs, many=True).data)
  
  
 class AnalysisDetailView(APIView):
     """GET /api/analyses/<id>/ – get one analysis."""
- 
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk):
         try:
-            obj = ResumeAnalysis.objects.get(pk=pk)
+            obj = ResumeAnalysis.objects.get(pk=pk, user=request.user)
         except ResumeAnalysis.DoesNotExist:
             return Response({'error': 'Not found'}, status=404)
         return Response(ResumeAnalysisSerializer(obj).data)

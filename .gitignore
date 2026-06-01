@@ -6,27 +6,39 @@ __pycache__/
 .Python
 env/
 venv/
-.env
 *.egg-info/
 dist/
 build/
- 
+
 # Django
 backend/media/
 backend/staticfiles/
 *.sqlite3
- 
+
+# Environment variables
+.env
+frontend/.env
+
 # Node / React
 node_modules/
+frontend/build/
 frontend/dist/
-frontend/.env
- 
+package-lock.json
+
 # OS
 .DS_Store
 Thumbs.db
- 
+
 # IDE
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
 
+# Logs
+*.log
+npm-debug.log*
+
+# Gemini
+.gemini/

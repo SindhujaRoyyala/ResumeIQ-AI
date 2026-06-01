@@ -22,7 +22,7 @@ class ResumeAnalysis(models.Model):
     matched_kw = models.JSONField(default=list)
     missing_kw = models.JSONField(default=list)
 
-    ai_suggestions = models.TextField(blank=True, default='')
+    ai_suggestions = models.JSONField(blank=True, default=list)
     raw_text = models.TextField(blank=True, default='')
 
     created_at = models.DateTimeField(auto_now_add=True)
