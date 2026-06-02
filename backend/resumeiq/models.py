@@ -19,11 +19,15 @@ class ResumeAnalysis(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     ats_score = models.IntegerField(null=True, blank=True)
+    score_breakdown = models.JSONField(default=dict)
     matched_kw = models.JSONField(default=list)
     missing_kw = models.JSONField(default=list)
 
     ai_suggestions = models.JSONField(blank=True, default=list)
     raw_text = models.TextField(blank=True, default='')
+    improved_resume = models.TextField(blank=True, default='')
+    strengths = models.JSONField(blank=True, default=list)
+    weaknesses = models.JSONField(blank=True, default=list)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

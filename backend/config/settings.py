@@ -75,7 +75,8 @@ REST_FRAMEWORK = {
 }
  
 # ── CORS ──────────────────────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = [os.environ.get('FRONTEND_URL', 'http://localhost:5173')]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
  
 # ── Media (uploaded files) ─────────────────────────────────────────────
 MEDIA_URL  = '/media/'
