@@ -1,8 +1,5 @@
 <div align="center">
   <h1 align="center">
-    <br>
-    <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=200&q=80" alt="ResumeIQ AI" width="200">
-    <br>
     ResumeIQ AI
   </h1>
   <p align="center">
