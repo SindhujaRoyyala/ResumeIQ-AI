@@ -1,6 +1,29 @@
 import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import api from '../api';
 import { toast } from 'react-toastify';
+
+const authApi = axios.create({ baseURL: 'http://localhost:8000' }); // Fresh axios for auth (no interceptors!)
+
+const getErrorMessage = (error) => {
+  const data = error.response?.data;
+  if (!data) {
+    return error.message || 'An unknown error occurred';
+  }
+  if (typeof data === 'string') {
+    return data;
+  }
+  if (data.error) {
+    return data.error;
+  }
+  if (typeof data === 'object') {
+    return Object.values(data)
+      .flat()
+      .map((item) => (typeof item === 'string' ? item : JSON.stringify(item)))
+      .join(' ');
+  }
+  return 'Signup failed';
+};
 
 export const AuthContext = createContext();
 
@@ -19,28 +42,28 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await api.post('/api/login/', { email, password });
+      const response = await authApi.post('/api/login/', { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setUser(response.data.user);
       toast.success('Welcome back!');
       return true;
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Login failed');
+      toast.error(getErrorMessage(error));
       return false;
     }
   };
 
   const signup = async (username, email, password) => {
     try {
-      const response = await api.post('/api/register/', { username, email, password });
+      const response = await authApi.post('/api/register/', { username, email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setUser(response.data.user);
       toast.success('Account created successfully!');
       return true;
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Signup failed');
+      toast.error(getErrorMessage(error));
       return false;
     }
   };

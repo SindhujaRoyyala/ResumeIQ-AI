@@ -14,12 +14,14 @@ from .ai_service import (
     generate_pdf_content,
     generate_docx_content
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 
 
 class RegisterView(APIView):
     """POST /api/register/ - Register a new user."""
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -34,6 +36,8 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     """POST /api/login/ - Login user and return token."""
+    permission_classes = [AllowAny]
+
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
