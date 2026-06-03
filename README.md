@@ -1,9 +1,5 @@
 <div align="center">
-  <h1 align="center">
-  
-    <br>
-    ResumeIQ AI
-  </h1>
+  <h1 align="center">ResumeIQ AI</h1>
   
   <p align="center">
     <b>🚀 AI-Powered Resume Analysis & ATS Optimization Platform</b>
