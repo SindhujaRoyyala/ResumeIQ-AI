@@ -40,9 +40,6 @@ pnpm-debug.log*
 lerna-debug.log*
 .vite
 
-# Screenshots
-screenshot/
-
 # OS
 .DS_Store
 Thumbs.db
